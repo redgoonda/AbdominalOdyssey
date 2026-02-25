@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Abdominal Odyssey — Q&A Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d1b2a;
+      --bg2: #162d4a;
+      --bg3: #1e3a5f;
+      --border: #2255cc;
+      --cyan: #00e5ff;
+      --gold: #ffd700;
+      --green: #27ae60;
+      --red: #cc2222;
+      --text: #c0d0e0;
+      --text-muted: #667788;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #0a1520;
+      border-bottom: 2px solid var(--cyan);
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header h1 {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 13px;
+      color: var(--cyan);
+      text-shadow: 0 0 10px var(--cyan);
+    }
+
+    header a {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 8px;
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+    header a:hover { color: var(--cyan); }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 28px 24px; }
+
+    .attending-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 8px;
+      padding: 10px 16px;
+      background: var(--bg2);
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .tab-btn:hover { border-color: var(--cyan); color: var(--text); }
+    .tab-btn.active {
+      background: var(--bg3);
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .panel-header h2 {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 11px;
+      color: var(--gold);
+    }
+
+    .panel-header .title-badge {
+      font-size: 9px;
+      color: var(--text-muted);
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      padding: 3px 10px;
+      border-radius: 4px;
+      font-family: 'Press Start 2P', monospace;
+    }
+
+    /* Catchphrase editor */
+    .catchphrase-section {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px 20px;
+      margin-bottom: 24px;
+    }
+
+    .catchphrase-section h3 {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 8px;
+      color: var(--cyan);
+      margin-bottom: 14px;
+    }
+
+    .cp-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .cp-group label {
+      font-size: 10px;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .cp-group textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: 5px;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      padding: 8px 10px;
+      resize: vertical;
+      min-height: 70px;
+      outline: none;
+    }
+    .cp-group textarea:focus { border-color: var(--cyan); }
+
+    /* Question list */
+    .question-list { display: flex; flex-direction: column; gap: 14px; }
+
+    .question-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px;
+      position: relative;
+      transition: border-color 0.15s;
+    }
+    .question-card:hover { border-color: var(--cyan); }
+
+    .question-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+
+    .question-num {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 8px;
+      color: var(--cyan);
+      background: var(--bg3);
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+
+    .question-card-actions { display: flex; gap: 8px; }
+
+    .btn-icon {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 4px 8px;
+      font-size: 12px;
+      transition: all 0.15s;
+    }
+    .btn-icon:hover { border-color: var(--cyan); color: var(--text); }
+    .btn-icon.delete:hover { border-color: var(--red); color: var(--red); }
+
+    .q-text {
+      font-size: 13px;
+      color: var(--text);
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+
+    .q-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .q-option {
+      font-size: 11px;
+      color: var(--text-muted);
+      background: var(--bg);
+      border: 1px solid var(--bg3);
+      border-radius: 4px;
+      padding: 5px 8px;
+    }
+
+    .q-option.correct {
+      color: var(--green);
+      border-color: var(--green);
+      background: #0d3320;
+    }
+
+    .q-explanation {
+      font-size: 10px;
+      color: var(--text-muted);
+      border-left: 3px solid var(--cyan);
+      padding-left: 10px;
+      margin-top: 8px;
+      font-style: italic;
+    }
+
+    /* Add / Edit form */
+    .add-question-section {
+      background: var(--bg2);
+      border: 1px solid var(--green);
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 24px;
+    }
+
+    .add-question-section h3 {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 8px;
+      color: var(--green);
+      margin-bottom: 16px;
+    }
+
+    .form-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .form-row label {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .form-row input[type="text"],
+    .form-row textarea,
+    .form-row select {
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: 5px;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      padding: 8px 10px;
+      outline: none;
+      width: 100%;
+    }
+    .form-row input:focus,
+    .form-row textarea:focus,
+    .form-row select:focus { border-color: var(--cyan); }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .option-input-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .option-label {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 9px;
+      color: var(--gold);
+      width: 20px;
+      flex-shrink: 0;
+    }
+
+    .form-actions { display: flex; gap: 10px; margin-top: 16px; }
+
+    .btn {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 9px;
+      padding: 10px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.15s;
+    }
+    .btn-primary { background: var(--green); color: #000; }
+    .btn-primary:hover { background: #2ecc71; }
+    .btn-secondary { background: var(--bg3); color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { border-color: var(--cyan); }
+    .btn-save-cp { background: var(--border); color: #fff; }
+    .btn-save-cp:hover { background: var(--cyan); color: #000; }
+
+    .status-msg {
+      font-size: 11px;
+      padding: 8px 12px;
+      border-radius: 4px;
+      margin-top: 12px;
+      display: none;
+    }
+    .status-msg.success { background: #0d3320; color: var(--green); border: 1px solid var(--green); }
+    .status-msg.error   { background: #3a0d0d; color: var(--red);   border: 1px solid var(--red);   }
+    .status-msg.visible { display: block; }
+
+    .section-divider {
+      height: 1px;
+      background: var(--border);
+      opacity: 0.3;
+      margin: 20px 0;
+    }
+
+    .no-questions {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 28px;
+      font-family: 'Press Start 2P', monospace;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>⚕ Abdominal Odyssey — Q&A Admin</h1>
+  <a href="/" target="_blank">← Back to Game</a>
+</header>
+
+<div class="container">
+
+  <!-- Attending tabs -->
+  <div class="attending-tabs" id="attending-tabs">
+    <!-- Populated by JS -->
+  </div>
+
+  <!-- Panels -->
+  <div id="panels">
+    <!-- Populated by JS -->
+  </div>
+
+</div>
+
+<script>
+const ATTENDINGS = [
+  { id: 'mohamed',  label: 'Dr. Mohamed',  badge: '⭐ Education God'  },
+  { id: 'kasprzak', label: 'Dr. Kasprzak', badge: '💰 Business God'   },
+  { id: 'kayat',    label: 'Dr. Kayat',    badge: '🔬 Prostate God'   },
+  { id: 'ramaiya',  label: 'Dr. Ramaiya',  badge: '☠ Cancer God'     },
+  { id: 'tirumani', label: 'Dr. Tirumani', badge: '👑 Clinical God'   },
+];
+
+let questionsData = null;
+let activeTab = ATTENDINGS[0].id;
+let editingId = null; // null = add mode, string = edit mode
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+async function init() {
+  const res = await fetch('/api/questions');
+  questionsData = await res.json();
+  renderTabs();
+  renderPanel(ATTENDINGS[0].id);
+}
+
+// ── Tabs ──────────────────────────────────────────────────────────────────────
+function renderTabs() {
+  const container = document.getElementById('attending-tabs');
+  container.innerHTML = ATTENDINGS.map(a => `
+    <button class="tab-btn ${a.id === activeTab ? 'active' : ''}"
+      onclick="switchTab('${a.id}')">
+      ${a.label.replace('Dr. ', '')}
+    </button>
+  `).join('');
+}
+
+function switchTab(id) {
+  activeTab = id;
+  editingId = null;
+  renderTabs();
+  renderPanel(id);
+}
+
+// ── Panel ─────────────────────────────────────────────────────────────────────
+function renderPanel(id) {
+  const att = ATTENDINGS.find(a => a.id === id);
+  const data = questionsData.attendings[id];
+  const container = document.getElementById('panels');
+
+  container.innerHTML = `
+    <div class="panel active" id="panel-${id}">
+      <div class="panel-header">
+        <h2>${att.label}</h2>
+        <span class="title-badge">${att.badge}</span>
+      </div>
+
+      <!-- Catchphrases -->
+      <div class="catchphrase-section">
+        <h3>💬 Catchphrases (spoken via TTS)</h3>
+        <div class="cp-row">
+          <div class="cp-group">
+            <label>✓ On Correct Answer</label>
+            <textarea id="cp-correct" rows="3">${data.catchphrase_correct}</textarea>
+          </div>
+          <div class="cp-group">
+            <label>✗ On Wrong Answer</label>
+            <textarea id="cp-wrong" rows="3">${data.catchphrase_wrong}</textarea>
+          </div>
+        </div>
+        <div style="margin-top:12px">
+          <button class="btn btn-save-cp" onclick="saveCatchphrases('${id}')">Save Catchphrases</button>
+        </div>
+        <div id="cp-status-${id}" class="status-msg"></div>
+      </div>
+
+      <div class="section-divider"></div>
+
+      <!-- Question list -->
+      <div class="question-list" id="qlist-${id}">
+        ${renderQuestionList(id, data.questions)}
+      </div>
+
+      <!-- Add / Edit form -->
+      <div class="add-question-section" id="add-form-${id}">
+        <h3 id="form-title-${id}">+ ADD NEW QUESTION</h3>
+        ${renderAddForm(id)}
+        <div id="form-status-${id}" class="status-msg"></div>
+      </div>
+    </div>
+  `;
+}
+
+function renderQuestionList(id, questions) {
+  if (!questions || questions.length === 0) {
+    return '<div class="no-questions">No questions yet — add one below!</div>';
+  }
+  return questions.map((q, i) => `
+    <div class="question-card" id="qcard-${q.id}">
+      <div class="question-card-header">
+        <span class="question-num">Q${i + 1}</span>
+        <div class="question-card-actions">
+          <button class="btn-icon" onclick="startEdit('${id}', '${q.id}')" title="Edit">✏</button>
+          <button class="btn-icon delete" onclick="deleteQuestion('${id}', '${q.id}')" title="Delete">🗑</button>
+        </div>
+      </div>
+      <div class="q-text">${escHtml(q.question)}</div>
+      <div class="q-options">
+        ${q.options.map((opt, oi) => `
+          <div class="q-option ${oi === q.correct ? 'correct' : ''}">
+            ${String.fromCharCode(65 + oi)}. ${escHtml(opt)} ${oi === q.correct ? '✓' : ''}
+          </div>
+        `).join('')}
+      </div>
+      ${q.explanation ? `<div class="q-explanation">${escHtml(q.explanation)}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+function renderAddForm(id, q = null) {
+  const isEdit = q !== null;
+  return `
+    <div class="form-row">
+      <label>Question text</label>
+      <textarea id="f-question" rows="3" placeholder="Enter the question...">${q ? escHtml(q.question) : ''}</textarea>
+    </div>
+    <div class="form-row">
+      <label>Answer Options</label>
+      <div class="options-grid">
+        ${['A','B','C','D'].map((letter, i) => `
+          <div class="option-input-group">
+            <span class="option-label">${letter}.</span>
+            <input type="text" id="f-opt-${i}" placeholder="Option ${letter}..." value="${q ? escHtml(q.options[i] || '') : ''}">
+          </div>
+        `).join('')}
+      </div>
+    </div>
+    <div class="form-row">
+      <label>Correct Answer</label>
+      <select id="f-correct">
+        ${['A','B','C','D'].map((l, i) => `
+          <option value="${i}" ${q && q.correct === i ? 'selected' : ''}>${l}</option>
+        `).join('')}
+      </select>
+    </div>
+    <div class="form-row">
+      <label>Explanation (shown after answer)</label>
+      <textarea id="f-explanation" rows="2" placeholder="Brief explanation...">${q ? escHtml(q.explanation || '') : ''}</textarea>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-primary" onclick="${isEdit ? `submitEdit('${id}','${q.id}')` : `submitAdd('${id}')`}">
+        ${isEdit ? '✓ Save Changes' : '+ Add Question'}
+      </button>
+      ${isEdit ? `<button class="btn btn-secondary" onclick="cancelEdit('${id}')">Cancel</button>` : ''}
+    </div>
+  `;
+}
+
+// ── CRUD actions ─────────────────────────────────────────────────────────────
+function getFormValues() {
+  return {
+    question:    document.getElementById('f-question').value.trim(),
+    options:     [0,1,2,3].map(i => document.getElementById(`f-opt-${i}`).value.trim()),
+    correct:     parseInt(document.getElementById('f-correct').value),
+    explanation: document.getElementById('f-explanation').value.trim()
+  };
+}
+
+function validateForm(vals) {
+  if (!vals.question) return 'Question text is required.';
+  const empty = vals.options.filter(o => !o);
+  if (empty.length > 0) return 'All 4 option fields are required.';
+  return null;
+}
+
+async function submitAdd(id) {
+  const vals = getFormValues();
+  const err = validateForm(vals);
+  if (err) { showStatus(`form-status-${id}`, err, false); return; }
+
+  const res = await fetch(`/api/questions/${id}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(vals)
+  });
+  if (res.ok) {
+    const result = await res.json();
+    questionsData.attendings[id].questions.push(result.question);
+    refreshQList(id);
+    clearForm();
+    showStatus(`form-status-${id}`, 'Question added!', true);
+  } else {
+    showStatus(`form-status-${id}`, 'Error saving question.', false);
+  }
+}
+
+async function submitEdit(id, qid) {
+  const vals = getFormValues();
+  const err = validateForm(vals);
+  if (err) { showStatus(`form-status-${id}`, err, false); return; }
+
+  const res = await fetch(`/api/questions/${id}/${qid}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(vals)
+  });
+  if (res.ok) {
+    const result = await res.json();
+    const qs = questionsData.attendings[id].questions;
+    const idx = qs.findIndex(q => q.id === qid);
+    if (idx >= 0) qs[idx] = result.question;
+    refreshQList(id);
+    cancelEdit(id);
+    showStatus(`form-status-${id}`, 'Question updated!', true);
+  } else {
+    showStatus(`form-status-${id}`, 'Error updating question.', false);
+  }
+}
+
+async function deleteQuestion(id, qid) {
+  if (!confirm('Delete this question?')) return;
+  const res = await fetch(`/api/questions/${id}/${qid}`, { method: 'DELETE' });
+  if (res.ok) {
+    questionsData.attendings[id].questions =
+      questionsData.attendings[id].questions.filter(q => q.id !== qid);
+    refreshQList(id);
+  }
+}
+
+async function saveCatchphrases(id) {
+  const correct = document.getElementById('cp-correct').value.trim();
+  const wrong   = document.getElementById('cp-wrong').value.trim();
+  const res = await fetch(`/api/questions/${id}/catchphrases`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ catchphrase_correct: correct, catchphrase_wrong: wrong })
+  });
+  if (res.ok) {
+    questionsData.attendings[id].catchphrase_correct = correct;
+    questionsData.attendings[id].catchphrase_wrong   = wrong;
+    showStatus(`cp-status-${id}`, 'Catchphrases saved!', true);
+  } else {
+    showStatus(`cp-status-${id}`, 'Error saving catchphrases.', false);
+  }
+}
+
+function startEdit(id, qid) {
+  editingId = qid;
+  const q = questionsData.attendings[id].questions.find(x => x.id === qid);
+  if (!q) return;
+  document.getElementById(`form-title-${id}`).textContent = '✏ EDIT QUESTION';
+  document.getElementById(`add-form-${id}`).innerHTML = `
+    <h3 id="form-title-${id}">✏ EDIT QUESTION</h3>
+    ${renderAddForm(id, q)}
+    <div id="form-status-${id}" class="status-msg"></div>
+  `;
+}
+
+function cancelEdit(id) {
+  editingId = null;
+  document.getElementById(`form-title-${id}`).textContent = '+ ADD NEW QUESTION';
+  document.getElementById(`add-form-${id}`).innerHTML = `
+    <h3 id="form-title-${id}">+ ADD NEW QUESTION</h3>
+    ${renderAddForm(id)}
+    <div id="form-status-${id}" class="status-msg"></div>
+  `;
+}
+
+function clearForm() {
+  ['f-question', 'f-explanation'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  [0,1,2,3].forEach(i => {
+    const el = document.getElementById(`f-opt-${i}`);
+    if (el) el.value = '';
+  });
+  const sel = document.getElementById('f-correct');
+  if (sel) sel.value = '0';
+}
+
+function refreshQList(id) {
+  const el = document.getElementById(`qlist-${id}`);
+  if (el) el.innerHTML = renderQuestionList(id, questionsData.attendings[id].questions);
+}
+
+function showStatus(elId, msg, success) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  el.textContent = msg;
+  el.className = `status-msg ${success ? 'success' : 'error'} visible`;
+  setTimeout(() => el.classList.remove('visible'), 4000);
+}
+
+function escHtml(str) {
+  return String(str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+init();
+</script>
+</body>
+</html>

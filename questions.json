@@ -1,0 +1,414 @@
+{
+  "attendings": {
+    "mohamed": {
+      "name": "The Education God",
+      "title": "Education God",
+      "catchphrase_correct": "Excellent! You are demonstrating the hallmarks of a great radiologist!",
+      "catchphrase_wrong": "Let us revisit the fundamentals together, shall we?",
+      "voiceRate": 1.0,
+      "voicePitch": 1.2,
+      "questions": [
+        {
+          "id": "m1",
+          "question": "Which principle governs minimizing radiation exposure to patients in radiology?",
+          "options": ["HIPAA", "ALARA", "PACS", "RIS"],
+          "correct": 1,
+          "explanation": "ALARA — As Low As Reasonably Achievable — is the cornerstone radiation safety principle in radiology."
+        },
+        {
+          "id": "m2",
+          "question": "What is the standard residency length for diagnostic radiology in the US after internship?",
+          "options": ["2 years", "3 years", "4 years", "5 years"],
+          "correct": 2,
+          "explanation": "Diagnostic radiology residency is 4 years after a 1-year internship (5 years total post-medical school)."
+        },
+        {
+          "id": "m3",
+          "question": "Which organization sets the core curriculum and milestones for radiology residents?",
+          "options": ["AMA", "ACR", "ACGME", "ABR"],
+          "correct": 2,
+          "explanation": "The ACGME (Accreditation Council for Graduate Medical Education) sets milestones and accreditation standards for radiology programs."
+        },
+        {
+          "id": "m4",
+          "question": "What does 'ACR' stand for in American radiology?",
+          "options": [
+            "American College of Radiology",
+            "Association of Clinical Radiologists",
+            "American Council of Radiography",
+            "Advanced Center for Radiology"
+          ],
+          "correct": 0,
+          "explanation": "ACR stands for the American College of Radiology, the professional society governing radiology practice in the US."
+        },
+        {
+          "id": "m5",
+          "question": "In radiology education, what does 'case-based learning' primarily emphasize?",
+          "options": [
+            "Memorizing textbook facts",
+            "Learning from real clinical imaging cases with attending guidance",
+            "Online lecture series only",
+            "Written board examination prep"
+          ],
+          "correct": 1,
+          "explanation": "Case-based learning with direct attending supervision is the cornerstone of radiology resident education as emphasized by ACGME."
+        }
+      ]
+    },
+    "kasprzak": {
+      "name": "The Business God",
+      "title": "Business God",
+      "catchphrase_correct": "NOW that is good for the bottom line! I like how you think!",
+      "catchphrase_wrong": "That answer would have cost us money. Study your billing codes!",
+      "voiceRate": 1.0,
+      "voicePitch": 0.9,
+      "questions": [
+        {
+          "id": "k1",
+          "question": "What does 'RVU' stand for in radiology physician compensation?",
+          "options": [
+            "Relative Value Unit",
+            "Radiographic Volume Utility",
+            "Revenue Validation Underwriting",
+            "Radiology Verified Unit"
+          ],
+          "correct": 0,
+          "explanation": "RVU (Relative Value Unit) is the fundamental unit used by Medicare to calculate physician payment for services rendered."
+        },
+        {
+          "id": "k2",
+          "question": "Which coding system is used to report radiology procedures for billing in the US?",
+          "options": ["ICD-10 codes", "CPT codes", "DRG codes", "SNOMED CT"],
+          "correct": 1,
+          "explanation": "CPT (Current Procedural Terminology) codes are maintained by the AMA and used to report radiology procedures for billing."
+        },
+        {
+          "id": "k3",
+          "question": "What is 'prior authorization' in radiology practice?",
+          "options": [
+            "A patient's written consent for imaging",
+            "Approval from insurance before performing certain imaging studies",
+            "A radiologist's preliminary read before final report",
+            "Hospital credentialing for reading privileges"
+          ],
+          "correct": 1,
+          "explanation": "Prior authorization is insurance carrier approval required before certain imaging studies to ensure reimbursement."
+        },
+        {
+          "id": "k4",
+          "question": "In value-based radiology, what metric is most directly tied to quality reporting?",
+          "options": [
+            "Turnaround time only",
+            "MIPS/MACRA quality measures",
+            "Number of studies read per day",
+            "Equipment utilization rate"
+          ],
+          "correct": 1,
+          "explanation": "MIPS (Merit-based Incentive Payment System) under MACRA ties physician payment to quality, value, and practice improvement."
+        },
+        {
+          "id": "k5",
+          "question": "How is professional component billing handled in an academic radiology department?",
+          "options": [
+            "Technical component only — no professional billing",
+            "Professional component billed separately by radiologists (modifier 26)",
+            "Global billing always includes both components",
+            "Split billing is illegal in academic centers"
+          ],
+          "correct": 1,
+          "explanation": "In academic hospitals, the professional component (interpretation) is billed separately using modifier 26, while the hospital bills the technical component."
+        }
+      ]
+    },
+    "kayat": {
+      "name": "The Prostate God",
+      "title": "Prostate God",
+      "catchphrase_correct": "Magnifico! You understand the prostate like a true maestro!",
+      "catchphrase_wrong": "Meu amigo, you must go back and read your PI-RADS guidelines!",
+      "voiceRate": 0.95,
+      "voicePitch": 1.0,
+      "questions": [
+        {
+          "id": "ky1",
+          "question": "On prostate MRI, which sequence is dominant for peripheral zone lesion assessment per PI-RADS v2.1?",
+          "options": [
+            "T1-weighted imaging",
+            "Dynamic contrast-enhanced (DCE)",
+            "Diffusion-weighted imaging (DWI)",
+            "T2-weighted imaging (T2W)"
+          ],
+          "correct": 2,
+          "explanation": "Per PI-RADS v2.1, DWI is the dominant sequence for the peripheral zone (PZ). T2W is dominant for the transition zone (TZ)."
+        },
+        {
+          "id": "ky2",
+          "question": "A PI-RADS 4 lesion implies what likelihood of clinically significant prostate cancer?",
+          "options": ["< 10%", "20–30%", "40–50%", "> 60%"],
+          "correct": 3,
+          "explanation": "PI-RADS 4 lesions carry > 60% likelihood of clinically significant cancer (Gleason ≥ 3+4 = Grade Group 2 or higher)."
+        },
+        {
+          "id": "ky3",
+          "question": "Where is the majority of clinically significant prostate cancer located?",
+          "options": [
+            "Transition zone (TZ)",
+            "Central zone (CZ)",
+            "Peripheral zone (PZ)",
+            "Anterior fibromuscular stroma"
+          ],
+          "correct": 2,
+          "explanation": "Approximately 70–75% of prostate cancers arise in the peripheral zone, though ~20–25% occur in the transition zone."
+        },
+        {
+          "id": "ky4",
+          "question": "What is the normal T2 signal appearance of the peripheral zone on prostate MRI?",
+          "options": [
+            "T2 hypointense (dark)",
+            "T2 hyperintense (bright)",
+            "T2 isointense to muscle",
+            "T2 signal void"
+          ],
+          "correct": 1,
+          "explanation": "The normal PZ appears T2 hyperintense. Cancer appears as T2 hypointense foci — loss of the normal bright signal."
+        },
+        {
+          "id": "ky5",
+          "question": "Which biopsy technique fuses mpMRI with real-time ultrasound for targeted prostate sampling?",
+          "options": [
+            "Systematic 12-core TRUS biopsy",
+            "MRI-TRUS fusion targeted biopsy",
+            "In-bore MRI biopsy only",
+            "CT-guided biopsy"
+          ],
+          "correct": 1,
+          "explanation": "MRI-TRUS fusion biopsy combines anatomic targeting from mpMRI with real-time TRUS guidance for sampling of PI-RADS 3–5 lesions."
+        }
+      ]
+    },
+    "ramaiya": {
+      "name": "The Cancer God",
+      "title": "Cancer God — Mini Boss",
+      "catchphrase_correct": "Ha! You might actually survive this fellowship after all!",
+      "catchphrase_wrong": "By the great RECIST criteria... that was absolutely painful to witness.",
+      "voiceRate": 0.95,
+      "voicePitch": 0.85,
+      "questions": [
+        {
+          "id": "r1",
+          "question": "Per RECIST 1.1, what is the minimum short-axis diameter for a lymph node to be a measurable target lesion?",
+          "options": ["5 mm", "10 mm", "15 mm", "20 mm"],
+          "correct": 2,
+          "explanation": "Per RECIST 1.1, lymph nodes must be ≥15 mm short axis to qualify as measurable target lesions."
+        },
+        {
+          "id": "r2",
+          "question": "What percentage DECREASE in sum of target lesion diameters defines Partial Response (PR) per RECIST 1.1?",
+          "options": ["≥20% decrease", "≥25% decrease", "≥30% decrease", "≥50% decrease"],
+          "correct": 2,
+          "explanation": "A ≥30% decrease from baseline in the sum of longest diameters of target lesions = Partial Response per RECIST 1.1."
+        },
+        {
+          "id": "r3",
+          "question": "Which response criteria are preferred for immunotherapy (checkpoint inhibitor) tumor assessment?",
+          "options": ["RECIST 1.1", "iRECIST or irRECIST", "WHO criteria", "Cheson criteria"],
+          "correct": 1,
+          "explanation": "iRECIST/irRECIST accounts for pseudoprogression seen with immunotherapy, where tumors may initially appear larger before responding."
+        },
+        {
+          "id": "r4",
+          "question": "In RECIST 1.1, what is the maximum number of target lesions that can be selected?",
+          "options": ["3 total", "5 total (max 2 per organ)", "10 total", "Unlimited"],
+          "correct": 1,
+          "explanation": "RECIST 1.1 allows a maximum of 5 target lesions total (up to 2 per organ) — reduced from 10 in RECIST 1.0."
+        },
+        {
+          "id": "r5",
+          "question": "Per RECIST 1.1, what defines Progressive Disease (PD)?",
+          "options": [
+            "≥20% increase in sum of diameters (min 5 mm absolute) OR new lesions",
+            "≥25% increase only",
+            "≥30% increase",
+            "Any new lesion regardless of target lesion change"
+          ],
+          "correct": 0,
+          "explanation": "PD = ≥20% increase in sum of longest diameters from nadir (minimum 5 mm absolute increase) OR unequivocal progression of non-target lesions OR new lesions."
+        },
+        {
+          "id": "r6",
+          "question": "What are the Choi response criteria primarily used for?",
+          "options": [
+            "Breast cancer liver metastases",
+            "GIST on tyrosine kinase inhibitors — accounts for density + size changes",
+            "Lymphoma on PET-CT",
+            "Prostate cancer bone metastases"
+          ],
+          "correct": 1,
+          "explanation": "Choi criteria for GIST on imatinib: response = ≥10% decrease in size OR ≥15% decrease in CT density (HU) — captures early response before size change."
+        },
+        {
+          "id": "r7",
+          "question": "In a GIST patient on imatinib, which CT finding suggests treatment response BEFORE size change?",
+          "options": [
+            "Increased lesion density (brighter)",
+            "Calcification within the lesion",
+            "Decreased lesion density — hypodense/cystic change",
+            "New surrounding lymphadenopathy"
+          ],
+          "correct": 2,
+          "explanation": "Responding GIST lesions become hypodense/cystic on CT due to myxoid degeneration and necrosis, often before size decreases."
+        },
+        {
+          "id": "r8",
+          "question": "Modified RECIST (mRECIST) for hepatocellular carcinoma measures:",
+          "options": [
+            "Entire tumor diameter including necrosis",
+            "Only the viable (arterial phase enhancing) tumor component",
+            "T2 signal change on MRI only",
+            "AFP level changes"
+          ],
+          "correct": 1,
+          "explanation": "mRECIST measures only the viable (arterially-enhancing) tumor portion, accounting for locoregional therapies that cause central necrosis."
+        },
+        {
+          "id": "r9",
+          "question": "A patient on sorafenib for HCC shows central necrosis and reduced enhancement but no size change. Per mRECIST this is:",
+          "options": [
+            "Stable Disease (SD)",
+            "Progressive Disease (PD)",
+            "Partial Response (PR) — viable tumor reduced",
+            "Complete Response (CR)"
+          ],
+          "correct": 2,
+          "explanation": "mRECIST PR = ≥30% decrease in the sum of diameters of viable (enhancing) tumor. Necrosis reducing enhancement qualifies even without overall size change."
+        },
+        {
+          "id": "r10",
+          "question": "Which response criteria are used for lymphoma assessment?",
+          "options": [
+            "RECIST 1.1",
+            "Lugano Classification (Cheson 2014) — PET-based",
+            "WHO criteria",
+            "mRECIST"
+          ],
+          "correct": 1,
+          "explanation": "The Lugano Classification (updated Cheson 2014 criteria) uses PET-CT for lymphoma response assessment — complete metabolic response = Deauville score 1–2."
+        }
+      ]
+    },
+    "tirumani": {
+      "name": "The Clinical God",
+      "title": "Division Chief — The Clinical God",
+      "catchphrase_correct": "As Division Chief, I hereby grant you safe passage. You have earned it.",
+      "catchphrase_wrong": "You DARE challenge the Division Chief with THAT answer?! Unacceptable!",
+      "voiceRate": 0.9,
+      "voicePitch": 0.75,
+      "questions": [
+        {
+          "id": "t1",
+          "question": "Pseudoprogression in immunotherapy-treated patients refers to:",
+          "options": [
+            "True tumor growth requiring treatment change",
+            "Apparent tumor growth due to immune cell infiltration — later shows true response",
+            "Contrast enhancement artifact mimicking progression",
+            "Radiation recall reaction in previously treated fields"
+          ],
+          "correct": 1,
+          "explanation": "Pseudoprogression = apparent early tumor enlargement from immune infiltration, which later demonstrates true response. Critical not to prematurely stop effective immunotherapy."
+        },
+        {
+          "id": "t2",
+          "question": "The hallmark imaging feature of HCC on contrast-enhanced MRI is:",
+          "options": [
+            "Portal venous phase hyperenhancement",
+            "Arterial phase hyperenhancement with portal venous/delayed phase washout",
+            "T2 hypointensity throughout all phases",
+            "Restricted diffusion only, without enhancement"
+          ],
+          "correct": 1,
+          "explanation": "HCC hallmark = arterial phase hyperenhancement (APHE) + washout appearance on portal venous/delayed phase. This is LR-5 (definite HCC) under LI-RADS."
+        },
+        {
+          "id": "t3",
+          "question": "In a patient with known ovarian cancer and new peritoneal implants, which response criteria should be used?",
+          "options": ["RECIST 1.1", "PERCIST", "Cheson criteria (lymphoma)", "mRECIST"],
+          "correct": 0,
+          "explanation": "RECIST 1.1 remains the standard for solid tumor response including gynecologic malignancies. PERCIST uses PET for metabolic response."
+        },
+        {
+          "id": "t4",
+          "question": "What is the most common site of metastatic disease in patients with gastrointestinal stromal tumor (GIST)?",
+          "options": [
+            "Bone and lymph nodes",
+            "Liver and peritoneum",
+            "Lung and brain",
+            "Adrenal glands"
+          ],
+          "correct": 1,
+          "explanation": "GISTs most commonly metastasize to the liver and peritoneum. Lymph node metastases are actually uncommon — unlike most other GI tumors."
+        },
+        {
+          "id": "t5",
+          "question": "What early imaging change on CT indicates response to imatinib in GIST before size change?",
+          "options": [
+            "Increase in lesion density",
+            "Decrease in lesion density (becoming hypodense/cystic)",
+            "New internal calcification",
+            "Decrease in lesion T2 signal on MRI"
+          ],
+          "correct": 1,
+          "explanation": "Responding GIST lesions decrease in CT density (Choi criteria) before demonstrating size decrease. Using RECIST alone can underestimate response."
+        },
+        {
+          "id": "t6",
+          "question": "What is the LI-RADS system used for?",
+          "options": [
+            "Liver cancer screening in the general population",
+            "Standardized reporting of liver observations in patients at risk for HCC",
+            "Staging colorectal liver metastases",
+            "Assessment of liver fibrosis grade"
+          ],
+          "correct": 1,
+          "explanation": "LI-RADS (Liver Imaging Reporting and Data System) standardizes reporting of liver observations on CT/MRI in patients at risk for HCC (cirrhosis, chronic HBV)."
+        },
+        {
+          "id": "t7",
+          "question": "Which LI-RADS v2018 category denotes definite HCC?",
+          "options": ["LR-3", "LR-4", "LR-5", "LR-M"],
+          "correct": 2,
+          "explanation": "LR-5 = definitely HCC. LR-4 = probably HCC. LR-M = probably or definitely malignant but not HCC-specific. LR-3 = intermediate probability."
+        },
+        {
+          "id": "t8",
+          "question": "What imaging finding defines 'washout appearance' in HCC on CT/MRI?",
+          "options": [
+            "Lesion becomes brighter than liver on delayed phase",
+            "Lesion becomes hypodense/hypointense relative to liver on portal venous or delayed phase",
+            "Complete loss of enhancement in all phases",
+            "Peripheral ring enhancement pattern"
+          ],
+          "correct": 1,
+          "explanation": "Washout appearance = lesion becomes hypodense (CT) or hypointense (MRI) relative to liver background on portal venous or delayed phases, after arterial hyperenhancement."
+        },
+        {
+          "id": "t9",
+          "question": "A new adrenal lesion in a patient with known lung cancer. What non-contrast CT attenuation threshold most favors a lipid-rich adenoma over metastasis?",
+          "options": ["< 0 HU", "≤ 10 HU", "> 20 HU", "> 40 HU"],
+          "correct": 1,
+          "explanation": "≤10 HU on non-contrast CT = lipid-rich adrenal adenoma with ~98% specificity. Most metastases are > 10 HU. Values > 20 HU warrant further evaluation (washout CT or MRI)."
+        },
+        {
+          "id": "t10",
+          "question": "What is the clinical significance of 'oligometastatic' disease in oncologic imaging?",
+          "options": [
+            "Diffuse metastatic spread — palliative care only",
+            "Limited metastatic burden (typically ≤5 lesions) where curative-intent local therapy may be considered",
+            "Micrometastases too small to detect on imaging",
+            "A single large metastasis requiring surgery"
+          ],
+          "correct": 1,
+          "explanation": "Oligometastatic disease (typically ≤5 lesions, limited organ involvement) represents an intermediate state where aggressive local therapies (SBRT, resection) may achieve long-term disease control or cure."
+        }
+      ]
+    }
+  }
+}
