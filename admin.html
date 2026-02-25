@@ -343,6 +343,73 @@
 </head>
 <body>
 
+<!-- ── Password gate ────────────────────────────────────────────────────────── -->
+<div id="auth-gate" style="
+  position:fixed;inset:0;background:#0a1018;
+  display:flex;align-items:center;justify-content:center;
+  z-index:99999;flex-direction:column;gap:24px;
+">
+  <div style="
+    background:#0d1b2a;border:3px solid #00e5ff;border-radius:12px;
+    padding:40px 48px;max-width:420px;width:90%;text-align:center;
+    box-shadow:0 0 60px rgba(0,229,255,0.2);
+  ">
+    <div style="font-family:'Press Start 2P',monospace;font-size:11px;color:#00e5ff;
+      text-shadow:0 0 10px #00e5ff;margin-bottom:8px;">
+      ⚕ ADMIN ACCESS
+    </div>
+    <div style="font-family:'Press Start 2P',monospace;font-size:7px;color:#445566;
+      margin-bottom:28px;">
+      Abdominal Odyssey · Q&A Management
+    </div>
+    <input id="auth-input" type="password" placeholder="Enter password..."
+      style="
+        width:100%;background:#162d4a;border:2px solid #2255cc;border-radius:6px;
+        color:#fff;font-family:'Inter',sans-serif;font-size:15px;
+        padding:12px 14px;outline:none;margin-bottom:16px;
+        transition:border-color 0.15s;text-align:center;letter-spacing:2px;
+      "
+      onkeydown="if(event.key==='Enter')checkAuth()"
+      onfocus="this.style.borderColor='#00e5ff'"
+      onblur="this.style.borderColor='#2255cc'"
+    >
+    <button onclick="checkAuth()" style="
+      width:100%;background:#004400;border:2px solid #27ae60;border-radius:6px;
+      color:#2ecc71;font-family:'Press Start 2P',monospace;font-size:10px;
+      padding:12px;cursor:pointer;transition:all 0.15s;
+    "
+      onmouseover="this.style.background='#006600'"
+      onmouseout="this.style.background='#004400'"
+    >▶ ENTER</button>
+    <div id="auth-error" style="
+      font-family:'Press Start 2P',monospace;font-size:8px;color:#ff4444;
+      margin-top:14px;min-height:16px;text-shadow:0 0 8px #ff4444;
+    "></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const PASS = 'clauderocks';
+  if (sessionStorage.getItem('ao_admin') === PASS) {
+    document.getElementById('auth-gate').style.display = 'none';
+  }
+})();
+
+function checkAuth() {
+  const val = document.getElementById('auth-input').value;
+  if (val === 'clauderocks') {
+    sessionStorage.setItem('ao_admin', 'clauderocks');
+    document.getElementById('auth-gate').style.display = 'none';
+  } else {
+    const err = document.getElementById('auth-error');
+    err.textContent = '✗ INCORRECT PASSWORD';
+    document.getElementById('auth-input').value = '';
+    setTimeout(() => { err.textContent = ''; }, 2500);
+  }
+}
+</script>
+
 <header>
   <h1>⚕ Abdominal Odyssey — Q&A Admin</h1>
   <a href="/" target="_blank">← Back to Game</a>
