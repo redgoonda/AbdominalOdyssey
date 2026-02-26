@@ -142,7 +142,4 @@ window.TouchControls = {
   overlay.appendChild(jZone);
   overlay.appendChild(btnWrap);
   document.body.appendChild(overlay);
-
-  // Prevent default touch behaviour on the canvas to avoid scroll/zoom
-  document.addEventListener('touchmove', e => { if (e.cancelable) e.preventDefault(); }, { passive: false });
 })();

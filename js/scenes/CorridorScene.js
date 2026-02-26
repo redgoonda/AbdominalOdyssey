@@ -643,8 +643,8 @@ class CorridorScene extends Phaser.Scene {
       if (dist < 280) {
         // Chase mode
         const angle = Phaser.Math.Angle.Between(enemy.x, enemy.y, player.x, player.y);
-        enemy.setVelocityX(Math.cos(angle) * 130);
-        enemy.setVelocityY(Math.sin(angle) * 130);
+        enemy.setVelocityX(Math.cos(angle) * 65);
+        enemy.setVelocityY(Math.sin(angle) * 65);
       } else {
         // Patrol mode
         enemy.setVelocityX(enemy._dir * 80);

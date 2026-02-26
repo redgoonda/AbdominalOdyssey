@@ -487,8 +487,8 @@ class MiniBossScene extends Phaser.Scene {
       const dist = Phaser.Math.Distance.Between(enemy.x, enemy.y, player.x, player.y);
       if (dist < 320) {
         const angle = Phaser.Math.Angle.Between(enemy.x, enemy.y, player.x, player.y);
-        enemy.setVelocityX(Math.cos(angle) * 145);
-        enemy.setVelocityY(Math.sin(angle) * 145);
+        enemy.setVelocityX(Math.cos(angle) * 80);
+        enemy.setVelocityY(Math.sin(angle) * 80);
       } else {
         enemy.setVelocityX(enemy._dir * 100);
         enemy.setVelocityY(0);

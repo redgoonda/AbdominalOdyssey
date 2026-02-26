@@ -273,7 +273,7 @@ class FinalBossScene extends Phaser.Scene {
       enemy._patrolX2 = Math.min(940, tx + 220);
       enemy.setDepth(8);
       // Boss's minions are faster
-      enemy._speed = 110 + i * 10;
+      enemy._speed = 55 + i * 8;
     }
   }
 
@@ -443,11 +443,11 @@ class FinalBossScene extends Phaser.Scene {
       const dist = Phaser.Math.Distance.Between(enemy.x, enemy.y, player.x, player.y);
       if (dist < 400) {
         const angle = Phaser.Math.Angle.Between(enemy.x, enemy.y, player.x, player.y);
-        const sp = enemy._speed || 110;
+        const sp = enemy._speed || 55;
         enemy.setVelocityX(Math.cos(angle) * sp);
         enemy.setVelocityY(Math.sin(angle) * sp);
       } else {
-        enemy.setVelocityX(enemy._dir * (enemy._speed || 110));
+        enemy.setVelocityX(enemy._dir * (enemy._speed || 55));
         enemy.setVelocityY(0);
         if (enemy.x >= enemy._patrolX2) enemy._dir = -1;
         if (enemy.x <= enemy._patrolX1) enemy._dir = 1;
