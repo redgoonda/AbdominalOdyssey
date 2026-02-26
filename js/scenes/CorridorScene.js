@@ -519,6 +519,7 @@ class CorridorScene extends Phaser.Scene {
   _checkAttendingProximity() {
     const px = this._player.x;
     const py = this._player.y;
+    const tc = window.TouchControls;
 
     this._attendings.forEach(att => {
       if (window.GameState.isCleared(att.id)) return;
