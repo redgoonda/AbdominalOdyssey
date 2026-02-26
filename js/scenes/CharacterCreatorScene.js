@@ -135,8 +135,8 @@ class CharacterCreatorScene extends Phaser.Scene {
     this._highlightGroup(this._clothBtns, 0);
 
     // ─ Name input ─────────────────────────────────────────────────────────
-    this._addSectionLabel(rx, 518, 'YOUR NAME');
-    this._nameEl = this.add.dom(rx + 160, 560, 'input', `
+    this._addSectionLabel(rx, 490, 'YOUR NAME');
+    this._nameEl = this.add.dom(rx + 160, 526, 'input', `
       background: #162d4a;
       border: 2px solid #2255cc;
       border-radius: 6px;
