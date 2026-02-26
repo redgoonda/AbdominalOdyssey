@@ -306,15 +306,23 @@ class MiniBossScene extends Phaser.Scene {
 
   _spawnBossEnemies() {
     const types = ['med_student', 'tech', 'tech'];
+    // Player spawns at x=880 (right side) — keep enemies on the left half
+    // and at least 300px away horizontally so they don't surround the player immediately
+    const PLAYER_X = 880;
+    const MIN_DIST = 300;
     for (let i = 0; i < 5; i++) {
-      const tx = Phaser.Math.Between(400, 900);
-      const ty = Phaser.Math.Between(120, 520);
+      let tx, ty, attempts = 0;
+      do {
+        tx = Phaser.Math.Between(80, 600);
+        ty = Phaser.Math.Between(120, 520);
+        attempts++;
+      } while (Math.abs(tx - PLAYER_X) < MIN_DIST && attempts < 20);
       const type = Phaser.Utils.Array.GetRandom(types);
       const enemy = this._enemies.create(tx, ty, type);
       enemy._type = type; enemy._stunned = false; enemy._hp = 4;
       enemy._dir = Phaser.Math.Between(0, 1) ? 1 : -1;
-      enemy._patrolX1 = Math.max(350, tx - 200);
-      enemy._patrolX2 = Math.min(940, tx + 200);
+      enemy._patrolX1 = Math.max(60, tx - 200);
+      enemy._patrolX2 = Math.min(620, tx + 200);
       enemy.setDepth(8);
     }
   }
