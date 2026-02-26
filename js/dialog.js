@@ -13,6 +13,60 @@ window.DialogSystem = (function () {
   let _correctOnFirst = true;
   let _speechSynth = window.speechSynthesis || null;
 
+  // ── Voice pool ────────────────────────────────────────────────────────────
+  let _femaleVoice = null;
+  let _maleVoices  = [];
+  let _voicesReady = false;
+
+  function _loadVoices() {
+    if (_voicesReady || !_speechSynth) return;
+    const all = _speechSynth.getVoices().filter(v => v.lang.startsWith('en'));
+    if (!all.length) return;
+    _voicesReady = true;
+
+    // Female candidates (ordered by preference)
+    const femaleHints = [
+      'Samantha', 'Victoria', 'Karen', 'Zira', 'Alice',
+      'Moira', 'Tessa', 'Fiona', 'Veena',
+      'Google UK English Female', 'Google US English Female',
+      'female', 'Female'
+    ];
+    _femaleVoice = all.find(v => femaleHints.some(h => v.name.includes(h))) || null;
+
+    // Male candidates — we want 4 distinct voices
+    const maleHints = [
+      ['Daniel'],            // British — voice 0 (Kasprzak)
+      ['Alex', 'Aaron'],     // American — voice 1 (Kayat)
+      ['Fred', 'Ralph'],     // Unusual/deep — voice 2 (Ramaiya)
+      ['David', 'Mark',      // Windows male / other — voice 3 (Tirumani)
+       'Google UK English Male', 'James', 'Tom']
+    ];
+
+    const usedNames = new Set();
+    maleHints.forEach(hints => {
+      const pick = all.find(v =>
+        v !== _femaleVoice &&
+        !usedNames.has(v.name) &&
+        hints.some(h => v.name.includes(h))
+      );
+      if (pick) {
+        usedNames.add(pick.name);
+        _maleVoices.push(pick);
+      } else {
+        // Fallback: any unused non-female English voice
+        const fallback = all.find(v => v !== _femaleVoice && !usedNames.has(v.name));
+        const chosen = fallback || all.find(v => v !== _femaleVoice) || all[0];
+        usedNames.add(chosen.name);
+        _maleVoices.push(chosen);
+      }
+    });
+  }
+
+  // Trigger voice load on first interaction and on voiceschanged
+  if (_speechSynth) {
+    _speechSynth.onvoiceschanged = _loadVoices;
+  }
+
   // ── Build overlay DOM (once) ──────────────────────────────────────────────
   function _buildOverlay() {
     if (document.getElementById('qa-overlay')) return;
@@ -180,14 +234,28 @@ window.DialogSystem = (function () {
   }
 
   // ── TTS catchphrase ───────────────────────────────────────────────────────
-  function _speak(text, rate = 1.0, pitch = 1.0) {
+  function _speak(text, rate = 1.0, pitch = 1.0, gender = 'male', voiceIndex = 0) {
     if (!_speechSynth) return;
-    _speechSynth.cancel();
-    const utt = new SpeechSynthesisUtterance(text);
-    utt.rate  = rate;
-    utt.pitch = pitch;
-    utt.volume = 0.9;
-    _speechSynth.speak(utt);
+    // Defer to avoid blocking the call stack — critical for iOS Safari
+    setTimeout(() => {
+      try {
+        _loadVoices();
+        _speechSynth.cancel();
+        const utt = new SpeechSynthesisUtterance(text);
+        utt.rate   = rate;
+        utt.pitch  = pitch;
+        utt.volume = 0.9;
+        utt.onerror = () => {}; // suppress TTS errors silently
+
+        if (gender === 'female' && _femaleVoice) {
+          utt.voice = _femaleVoice;
+        } else if (_maleVoices.length > 0) {
+          utt.voice = _maleVoices[voiceIndex % _maleVoices.length];
+        }
+
+        _speechSynth.speak(utt);
+      } catch (e) { /* TTS is cosmetic — never block the game */ }
+    }, 50);
   }
 
   // ── Show a single question ────────────────────────────────────────────────
@@ -241,8 +309,10 @@ window.DialogSystem = (function () {
 
       _speak(
         _attendingData.catchphrase_correct,
-        _attendingData.voiceRate || 1.0,
-        _attendingData.voicePitch || 1.0
+        _attendingData.voiceRate  || 1.0,
+        _attendingData.voicePitch || 1.0,
+        _attendingData.voiceGender || 'male',
+        _attendingData.voiceIndex  || 0
       );
 
       // Advance to next question after pause
@@ -268,8 +338,10 @@ window.DialogSystem = (function () {
 
       _speak(
         _attendingData.catchphrase_wrong,
-        _attendingData.voiceRate || 1.0,
-        (_attendingData.voicePitch || 1.0) * 0.85
+        _attendingData.voiceRate  || 1.0,
+        (_attendingData.voicePitch || 1.0) * 0.85,
+        _attendingData.voiceGender || 'male',
+        _attendingData.voiceIndex  || 0
       );
 
       const dead = window.GameState.takeDamage(1);
@@ -298,7 +370,7 @@ window.DialogSystem = (function () {
 
   function _dismiss(cleared, dead = false) {
     if (_overlay) _overlay.classList.add('qa-hidden');
-    if (_speechSynth) _speechSynth.cancel();
+    try { if (_speechSynth) _speechSynth.cancel(); } catch (e) {}
     if (_onComplete) _onComplete({ cleared, dead });
   }
 

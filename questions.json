@@ -7,6 +7,8 @@
       "catchphrase_wrong": "Let us revisit the fundamentals together, shall we?",
       "voiceRate": 1.0,
       "voicePitch": 1.2,
+      "voiceGender": "female",
+      "voiceIndex": 0,
       "questions": [
         {
           "id": "m1",
@@ -62,6 +64,8 @@
       "catchphrase_wrong": "That answer would have cost us money. Study your billing codes!",
       "voiceRate": 1.0,
       "voicePitch": 0.9,
+      "voiceGender": "male",
+      "voiceIndex": 0,
       "questions": [
         {
           "id": "k1",
@@ -127,6 +131,8 @@
       "catchphrase_wrong": "Meu amigo, you must go back and read your PI-RADS guidelines!",
       "voiceRate": 0.95,
       "voicePitch": 1.0,
+      "voiceGender": "male",
+      "voiceIndex": 1,
       "questions": [
         {
           "id": "ky1",
@@ -192,6 +198,8 @@
       "catchphrase_wrong": "By the great RECIST criteria... that was absolutely painful to witness.",
       "voiceRate": 0.95,
       "voicePitch": 0.85,
+      "voiceGender": "male",
+      "voiceIndex": 2,
       "questions": [
         {
           "id": "r1",
@@ -300,6 +308,8 @@
       "title": "Division Chief — The Clinical God",
       "catchphrase_correct": "As Division Chief, I hereby grant you safe passage. You have earned it.",
       "catchphrase_wrong": "You DARE challenge the Division Chief with THAT answer?! Unacceptable!",
+      "voiceGender": "male",
+      "voiceIndex": 3,
       "voiceRate": 0.9,
       "voicePitch": 0.75,
       "questions": [
