@@ -526,7 +526,7 @@ class CorridorScene extends Phaser.Scene {
       const near = dist < att.interactRadius;
       att.prompt.setVisible(near);
 
-      if (near && Phaser.Input.Keyboard.JustDown(this._eKey) && !this._dialogOpen) {
+      if (near && (Phaser.Input.Keyboard.JustDown(this._eKey) || (tc && tc.interactJustDown)) && !this._dialogOpen) {
         this._startInteraction(att);
       }
     });
@@ -606,11 +606,12 @@ class CorridorScene extends Phaser.Scene {
     const speed   = 200;
 
     let vx = 0, vy = 0;
+    const tc = window.TouchControls;
 
-    if (cursors.left.isDown  || wasd.A.isDown) { vx = -speed; player.facing = 'left';  }
-    if (cursors.right.isDown || wasd.D.isDown) { vx =  speed; player.facing = 'right'; }
-    if (cursors.up.isDown    || wasd.W.isDown) { vy = -speed; player.facing = 'up';    }
-    if (cursors.down.isDown  || wasd.S.isDown) { vy =  speed; player.facing = 'down';  }
+    if (cursors.left.isDown  || wasd.A.isDown || (tc && tc.dx < -0.3)) { vx = -speed; player.facing = 'left';  }
+    if (cursors.right.isDown || wasd.D.isDown || (tc && tc.dx >  0.3)) { vx =  speed; player.facing = 'right'; }
+    if (cursors.up.isDown    || wasd.W.isDown || (tc && tc.dy < -0.3)) { vy = -speed; player.facing = 'up';    }
+    if (cursors.down.isDown  || wasd.S.isDown || (tc && tc.dy >  0.3)) { vy =  speed; player.facing = 'down';  }
 
     // Diagonal normalisation
     if (vx !== 0 && vy !== 0) {
@@ -630,7 +631,7 @@ class CorridorScene extends Phaser.Scene {
     player.setFlipX(player.facing === 'right');
 
     // Fire probe
-    if (Phaser.Input.Keyboard.JustDown(this._spaceKey)) {
+    if (Phaser.Input.Keyboard.JustDown(this._spaceKey) || (tc && tc.fireJustDown)) {
       this._fireProbe();
     }
     this._probeCooldown = Math.max(0, this._probeCooldown - delta);

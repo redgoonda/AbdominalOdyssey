@@ -7,6 +7,10 @@ const config = {
   parent: 'game-container',
   backgroundColor: '#1a1a2e',
   dom: { createContainer: true },
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+  },
   physics: {
     default: 'arcade',
     arcade: {

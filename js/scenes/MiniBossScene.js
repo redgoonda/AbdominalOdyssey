@@ -464,11 +464,12 @@ class MiniBossScene extends Phaser.Scene {
     const player  = this._player;
     const speed   = 200;
     let vx = 0, vy = 0;
+    const tc = window.TouchControls;
 
-    if (cursors.left.isDown  || wasd.A.isDown) { vx = -speed; player.facing = 'left'; }
-    if (cursors.right.isDown || wasd.D.isDown) { vx =  speed; player.facing = 'right'; }
-    if (cursors.up.isDown    || wasd.W.isDown) { vy = -speed; player.facing = 'up'; }
-    if (cursors.down.isDown  || wasd.S.isDown) { vy =  speed; player.facing = 'down'; }
+    if (cursors.left.isDown  || wasd.A.isDown || (tc && tc.dx < -0.3)) { vx = -speed; player.facing = 'left'; }
+    if (cursors.right.isDown || wasd.D.isDown || (tc && tc.dx >  0.3)) { vx =  speed; player.facing = 'right'; }
+    if (cursors.up.isDown    || wasd.W.isDown || (tc && tc.dy < -0.3)) { vy = -speed; player.facing = 'up'; }
+    if (cursors.down.isDown  || wasd.S.isDown || (tc && tc.dy >  0.3)) { vy =  speed; player.facing = 'down'; }
 
     if (vx !== 0 && vy !== 0) { vx *= 0.707; vy *= 0.707; }
     player.setVelocity(vx, vy);
@@ -477,7 +478,7 @@ class MiniBossScene extends Phaser.Scene {
     const frameKey = `player_${player.facing}${moving ? '_walk' : ''}`;
     if (this.textures.exists(frameKey)) player.setTexture(frameKey);
 
-    if (Phaser.Input.Keyboard.JustDown(this._spaceKey)) this._fireProbe();
+    if (Phaser.Input.Keyboard.JustDown(this._spaceKey) || (tc && tc.fireJustDown)) this._fireProbe();
     this._probeCooldown = Math.max(0, this._probeCooldown - delta);
 
     // Mini boss enemies — chase player within range, patrol otherwise
@@ -500,7 +501,7 @@ class MiniBossScene extends Phaser.Scene {
     if (this._bossInteractable && !this._bossCleared) {
       const dist = Phaser.Math.Distance.Between(player.x, player.y, 200, 320);
       this._bossPrompt.setVisible(dist < 200);
-      if (dist < 200 && Phaser.Input.Keyboard.JustDown(this._eKey)) {
+      if (dist < 200 && (Phaser.Input.Keyboard.JustDown(this._eKey) || (tc && tc.interactJustDown))) {
         this._startBossInteraction();
       }
     }

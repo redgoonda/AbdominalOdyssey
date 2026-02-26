@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <title>Abdominal Odyssey</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,16 +27,21 @@
       position: relative;
       border: 2px solid #00e5ff44;
       box-shadow: 0 0 40px rgba(0, 229, 255, 0.15), 0 0 80px rgba(0, 229, 255, 0.05);
+      width: 100%;
+      max-width: 960px;
     }
 
     #game-container canvas {
       display: block;
+      width: 100% !important;
+      height: auto !important;
       image-rendering: pixelated;
       image-rendering: crisp-edges;
     }
 
     #title-bar {
-      width: 960px;
+      width: 100%;
+      max-width: 960px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -119,6 +126,9 @@
 <script src="/js/scenes/MiniBossScene.js"></script>
 <script src="/js/scenes/FinalBossScene.js"></script>
 <script src="/js/scenes/GameOverScene.js"></script>
+
+<!-- Touch controls (mobile) -->
+<script src="/js/touch.js"></script>
 
 <!-- Main -->
 <script src="/js/main.js"></script>
