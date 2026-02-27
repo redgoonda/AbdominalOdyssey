@@ -75,6 +75,7 @@ class CorridorScene extends Phaser.Scene {
     // ── Obstacles (med students + techs) ──────────────────────────────────
     this._enemies    = this.physics.add.group();
     this._projectiles = this.physics.add.group();
+    this._healthDrops = this.physics.add.group();
     this._spawnEnemies();
 
     // ── Player ───────────────────────────────────────────────────────────
@@ -108,12 +109,13 @@ class CorridorScene extends Phaser.Scene {
       window.GameState.addScore(10);
       this._updateHUD();
       if (enemy._hp <= 0) {
+        const ex = enemy.x, ey = enemy.y;
         this.tweens.add({
           targets: enemy,
           alpha: 0,
           scaleX: 2, scaleY: 2,
           duration: 400,
-          onComplete: () => enemy.destroy()
+          onComplete: () => { enemy.destroy(); this._tryDropHealth(ex, ey); }
         });
       } else {
         this.time.delayedCall(1500, () => {
@@ -123,6 +125,14 @@ class CorridorScene extends Phaser.Scene {
           }
         });
       }
+    });
+
+    // Physics overlap: player collects health drops
+    this.physics.add.overlap(this._player, this._healthDrops, (player, drop) => {
+      drop.destroy();
+      window.GameState.heal(1);
+      this._updateHUD();
+      this._floatText(drop.x, drop.y, '+1 HP', '#2ecc71');
     });
 
     // ── Camera follow ─────────────────────────────────────────────────────
@@ -546,8 +556,10 @@ class CorridorScene extends Phaser.Scene {
       if (dead) { this._gameOver(); return; }
       if (cleared) {
         window.GameState.clearAttending(att.id);
+        window.GameState.heal(2);
         this._showCleared(att);
         this._updateHUD();
+        this._floatText(att.sprite.x, att.sprite.y - 60, '+2 HP', '#2ecc71');
         this._checkAllCleared();
       }
     });
@@ -584,6 +596,30 @@ class CorridorScene extends Phaser.Scene {
       strokeThickness: 6
     }).setOrigin(0.5).setDepth(200);
     this.tweens.add({ targets: msg, alpha: 0, delay: 3500, duration: 1000, onComplete: () => msg.destroy() });
+  }
+
+  // Spawn a floating text that rises and fades (world-space)
+  _floatText(x, y, msg, color = '#ffffff') {
+    const t = this.add.text(x, y, msg, {
+      fontFamily: "'Press Start 2P', monospace",
+      fontSize: '11px',
+      color,
+      stroke: '#000000',
+      strokeThickness: 4
+    }).setOrigin(0.5).setDepth(300);
+    this.tweens.add({ targets: t, y: y - 70, alpha: 0, duration: 1800, onComplete: () => t.destroy() });
+  }
+
+  // 30% chance to drop a health pickup at (x, y)
+  _tryDropHealth(x, y) {
+    if (Math.random() > 0.30) return;
+    const drop = this._healthDrops.create(x, y, 'heart_full');
+    drop.setScale(0.7).setDepth(9);
+    drop.body.setAllowGravity(false);
+    drop.body.setVelocity(0, 0);
+    this.tweens.add({ targets: drop, y: y - 6, duration: 600, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+    // Auto-despawn after 10 seconds
+    this.time.delayedCall(10000, () => { if (drop && drop.active) drop.destroy(); });
   }
 
   _checkTransition() {

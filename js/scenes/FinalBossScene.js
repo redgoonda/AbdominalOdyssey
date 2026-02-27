@@ -23,6 +23,7 @@ class FinalBossScene extends Phaser.Scene {
 
     this._enemies    = this.physics.add.group();
     this._projectiles = this.physics.add.group();
+    this._healthDrops = this.physics.add.group();
     this._spawnFinalEnemies();
 
     // Player enters from right
@@ -49,10 +50,19 @@ class FinalBossScene extends Phaser.Scene {
       window.GameState.addScore(20);
       this._updateHUD();
       if (enemy._hp <= 0) {
-        this.tweens.add({ targets: enemy, alpha: 0, scaleX: 2, scaleY: 2, duration: 400, onComplete: () => enemy.destroy() });
+        const ex = enemy.x, ey = enemy.y;
+        this.tweens.add({ targets: enemy, alpha: 0, scaleX: 2, scaleY: 2, duration: 400,
+          onComplete: () => { enemy.destroy(); this._tryDropHealth(ex, ey); } });
       } else {
         this.time.delayedCall(2500, () => { if (enemy && enemy.active) { enemy._stunned = false; enemy.setAlpha(1); } });
       }
+    });
+
+    this.physics.add.overlap(this._player, this._healthDrops, (player, drop) => {
+      drop.destroy();
+      window.GameState.heal(1);
+      this._updateHUD();
+      this._floatText(drop.x, drop.y, '+1 HP', '#2ecc71');
     });
 
     // Dr. Tirumani — FINAL BOSS at center-left, enthroned
@@ -261,6 +271,25 @@ class FinalBossScene extends Phaser.Scene {
         delay: i * 120
       });
     }
+  }
+
+  _floatText(x, y, msg, color = '#ffffff') {
+    const t = this.add.text(x, y, msg, {
+      fontFamily: "'Press Start 2P', monospace",
+      fontSize: '11px', color,
+      stroke: '#000000', strokeThickness: 4
+    }).setOrigin(0.5).setDepth(300);
+    this.tweens.add({ targets: t, y: y - 70, alpha: 0, duration: 1800, onComplete: () => t.destroy() });
+  }
+
+  _tryDropHealth(x, y) {
+    if (Math.random() > 0.30) return;
+    const drop = this._healthDrops.create(x, y, 'heart_full');
+    drop.setScale(0.7).setDepth(9);
+    drop.body.setAllowGravity(false);
+    drop.body.setVelocity(0, 0);
+    this.tweens.add({ targets: drop, y: y - 6, duration: 600, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
+    this.time.delayedCall(10000, () => { if (drop && drop.active) drop.destroy(); });
   }
 
   _spawnFinalEnemies() {
