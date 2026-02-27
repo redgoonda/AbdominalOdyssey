@@ -95,6 +95,8 @@ class FinalBossScene extends Phaser.Scene {
     this._probeCooldown = 0;
 
     this.cameras.main.fadeIn(200, 0, 0, 0);
+    // Thunder intro stinger → then final boss track
+    window.MusicSystem.playBossIntro('finalboss');
     this.time.delayedCall(400, () => this._playFinalBossEntrance());
   }
 
@@ -337,6 +339,7 @@ class FinalBossScene extends Phaser.Scene {
     this.cameras.main.shake(250, 0.01);
     if (dead) {
       this._dialogOpen = true;
+      window.MusicSystem.stop();
       this.cameras.main.fadeOut(800, 0, 0, 0);
       this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start('GameOverScene', { won: false }));
     }
@@ -351,6 +354,7 @@ class FinalBossScene extends Phaser.Scene {
       this._dialogOpen = false;
       this._updateHUD();
       if (dead) {
+        window.MusicSystem.stop();
         this.cameras.main.fadeOut(800, 0, 0, 0);
         this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start('GameOverScene', { won: false }));
         return;
@@ -364,6 +368,13 @@ class FinalBossScene extends Phaser.Scene {
 
         window.GameState.addScore(1000);
         this._updateHUD();
+        window.MusicSystem.stop();
+
+        // Dismiss remaining enemies
+        this._enemies.getChildren().slice().forEach(enemy => {
+          this.tweens.add({ targets: enemy, alpha: 0, scaleX: 2, scaleY: 2, duration: 600,
+            onComplete: () => { if (enemy.active) enemy.destroy(); } });
+        });
 
         // Epic victory sequence
         this.cameras.main.shake(600, 0.025);

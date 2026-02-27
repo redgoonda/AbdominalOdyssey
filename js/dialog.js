@@ -24,22 +24,20 @@ window.DialogSystem = (function () {
     if (!all.length) return;
     _voicesReady = true;
 
-    // Female candidates (ordered by preference)
+    // Female candidates — prefer neural/Google voices (sound far more natural)
     const femaleHints = [
-      'Samantha', 'Victoria', 'Karen', 'Zira', 'Alice',
-      'Moira', 'Tessa', 'Fiona', 'Veena',
       'Google UK English Female', 'Google US English Female',
-      'female', 'Female'
+      'Samantha', 'Victoria', 'Karen', 'Zira', 'Alice',
+      'Moira', 'Tessa', 'Fiona', 'Veena', 'female', 'Female'
     ];
     _femaleVoice = all.find(v => femaleHints.some(h => v.name.includes(h))) || null;
 
-    // Male candidates — we want 4 distinct voices
+    // Male candidates — prefer Google neural voices, then named OS voices
     const maleHints = [
-      ['Daniel'],            // British — voice 0 (Kasprzak)
-      ['Alex', 'Aaron'],     // American — voice 1 (Kayat)
-      ['Fred', 'Ralph'],     // Unusual/deep — voice 2 (Ramaiya)
-      ['David', 'Mark',      // Windows male / other — voice 3 (Tirumani)
-       'Google UK English Male', 'James', 'Tom']
+      ['Google UK English Male', 'Daniel'],           // British — voice 0 (Kasprzak)
+      ['Google US English', 'Alex', 'Aaron'],         // American — voice 1 (Kayat)
+      ['Fred', 'Ralph', 'Google US English Male'],    // Deep/unusual — voice 2 (Ramaiya)
+      ['David', 'Mark', 'James', 'Tom', 'Google']     // Authoritative — voice 3 (Tirumani)
     ];
 
     const usedNames = new Set();
@@ -242,9 +240,11 @@ window.DialogSystem = (function () {
         _loadVoices();
         _speechSynth.cancel();
         const utt = new SpeechSynthesisUtterance(text);
-        utt.rate   = rate;
-        utt.pitch  = pitch;
-        utt.volume = 0.9;
+        // Slow down slightly — closer to natural human cadence
+        utt.rate   = rate * 0.88 + Math.random() * 0.04;
+        // Tiny random pitch variation makes it sound less flat/robotic
+        utt.pitch  = pitch + (Math.random() * 0.12 - 0.06);
+        utt.volume = 1.0;
         utt.onerror = () => {}; // suppress TTS errors silently
 
         if (gender === 'female' && _femaleVoice) {

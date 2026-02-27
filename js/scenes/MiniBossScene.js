@@ -107,6 +107,8 @@ class MiniBossScene extends Phaser.Scene {
 
     // ── MINI BOSS ENTRANCE SEQUENCE ───────────────────────────────────────
     this.cameras.main.fadeIn(200, 0, 0, 0);
+    // Thunder intro stinger → then mini boss track
+    window.MusicSystem.playBossIntro('miniboss');
     this.time.delayedCall(400, () => this._playBossEntrance());
   }
 
@@ -389,6 +391,7 @@ class MiniBossScene extends Phaser.Scene {
     this.cameras.main.shake(200, 0.008);
     if (dead) {
       this._dialogOpen = true;
+      window.MusicSystem.stop();
       this.cameras.main.fadeOut(800, 0, 0, 0);
       this.cameras.main.once('camerafadeoutcomplete', () => {
         this.scene.start('GameOverScene', { won: false });
@@ -405,6 +408,7 @@ class MiniBossScene extends Phaser.Scene {
       this._dialogOpen = false;
       this._updateHUD();
       if (dead) {
+        window.MusicSystem.stop();
         this.cameras.main.fadeOut(800, 0, 0, 0);
         this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start('GameOverScene', { won: false }));
         return;
@@ -416,7 +420,14 @@ class MiniBossScene extends Phaser.Scene {
         this._bossInteractable = false;
         this._bossPrompt.setVisible(false);
 
+        // Dismiss remaining enemies
+        this._enemies.getChildren().slice().forEach(enemy => {
+          this.tweens.add({ targets: enemy, alpha: 0, scaleX: 2, scaleY: 2, duration: 600,
+            onComplete: () => { if (enemy.active) enemy.destroy(); } });
+        });
+
         // Boss defeated animation
+        window.MusicSystem.stop();
         this.tweens.add({ targets: this._bossSprite, alpha: 0, scaleX: 0, scaleY: 0, duration: 800 });
         this.cameras.main.shake(400, 0.02);
         window.GameState.addScore(500);

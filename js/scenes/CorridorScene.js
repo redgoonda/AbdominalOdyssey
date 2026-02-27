@@ -170,6 +170,9 @@ class CorridorScene extends Phaser.Scene {
 
     this.cameras.main.fadeIn(600, 0, 0, 0);
     this._dialogOpen = false;
+
+    // ── Music ─────────────────────────────────────────────────────────────
+    window.MusicSystem.play('corridor');
   }
 
   // ── Room drawing ─────────────────────────────────────────────────────────
@@ -509,6 +512,7 @@ class CorridorScene extends Phaser.Scene {
 
   _gameOver() {
     this._dialogOpen = true;
+    window.MusicSystem.stop();
     this.cameras.main.fadeOut(800, 0, 0, 0);
     this.cameras.main.once('camerafadeoutcomplete', () => {
       this.scene.start('GameOverScene', { won: false });
@@ -587,6 +591,7 @@ class CorridorScene extends Phaser.Scene {
     const dist = Phaser.Math.Distance.Between(this._player.x, this._player.y, 120, WORLD_H / 2);
     if (dist < 80) {
       this._dialogOpen = true;
+      window.MusicSystem.stop();
       this.cameras.main.fadeOut(800, 0, 0, 0);
       this.cameras.main.once('camerafadeoutcomplete', () => {
         this.scene.start('MiniBossScene');
